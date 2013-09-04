@@ -5,11 +5,16 @@ import android.app.Activity;
 import android.view.Menu;
 
 public class GameActivity extends Activity {
-
+	GameView gameView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
+		
+		gameView = (GameView)findViewById(R.id.gameView1);
+		
+		gameView.getHolder().addCallback(gameView);
 	}
 
 	@Override
