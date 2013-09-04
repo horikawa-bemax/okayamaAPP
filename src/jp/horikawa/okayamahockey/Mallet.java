@@ -5,11 +5,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
 
 public abstract class Mallet {
 	private Resources res;
@@ -22,30 +22,31 @@ public abstract class Mallet {
 	
 	public Mallet(Context context, float r) {
 		res = context.getResources();
-		paint = new Paint();
 		cr = r;
 		speed = (int)cr;
+		rect = new RectF();
+		imageRect = new Rect();
+		paint = new Paint();
 	}
 	
-	public Resources getRes(){
+	Resources getRes(){
 		return res;
 	}
 	
-	public void setPaintColor(int color){
-		paint.setColor(color);
+	void setPaint(Paint p){
+		paint = p;
 	}
 	
-	public void setImage(int drawable){
-		image = BitmapFactory.decodeResource(res, drawable);
-		imageRect = new Rect(0,0,image.getWidth(), image.getHeight());
+	void setImage(Bitmap b){
+		image = b;
 	}
-	
-	public void draw(Canvas canvas){
+		
+	void draw(Canvas canvas){
 		canvas.drawCircle(rect.centerX(), rect.centerY(), cr, paint);
 		canvas.drawBitmap(image, imageRect, rect, null);
 	}
 	
-	public void initPosition(float cx, float cy){
+	void initPosition(float cx, float cy){
 		rect.set(cx-cr, cy-cr, cx+cr, cy+cr);
 	}
 	
@@ -72,27 +73,28 @@ class PeachMallet extends Mallet{
 	
 	public PeachMallet(Context context, float r) {
 		super(context, r);
-		setPaintColor(getRes().getColor(R.color.peach));
-		setImage(getRes().getInteger(R.drawable.ic_launcher));
+		Paint p = new Paint();
+		p.setColor(getRes().getColor(R.color.peach));
+		setPaint(p);
+		
+		Bitmap b = BitmapFactory.decodeResource(getRes(), R.drawable.peach);
+		setImage(b);
 	}
 
-	@Override
-	public void draw(Canvas canvas) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
 }
 
 class MuscatMallet extends Mallet{
 
 	public MuscatMallet(Context context, float r) {
 		super(context, r);
+		Paint p = new Paint();
+		p.setColor(getRes().getColor(R.color.peach));
+		setPaint(p);
+		
+		Bitmap b = BitmapFactory.decodeResource(getRes(), R.drawable.peach);
+		Matrix m = new Matrix();
+		m.setRotate(180);
+		setImage(Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, false));
 	}
 
-	@Override
-	public void draw(Canvas canvas) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
-	
 }
