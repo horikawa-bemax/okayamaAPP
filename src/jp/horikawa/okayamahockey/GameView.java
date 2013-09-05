@@ -6,15 +6,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
- * あああ
+ * GameViewクラス
  * @author Masaaki Horikawa
  *
  */
-public class GameView extends SurfaceView implements SurfaceHolder.Callback, Runnable{
+public class GameView extends SurfaceView{
 	private Resources res;
 	private RectF viewRect, fieldRect;
 	private Paint fieldPaint;
@@ -47,32 +46,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		fieldRect = new RectF();
 		fieldPaint = new Paint();
 		fieldPaint.setColor(res.getColor(R.color.field));
-	}
-	
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		viewRect = new RectF(0,0,width,height);
-		fieldRect = new RectF(10, 10, width-10, height-10);
-		
-		Canvas c = getHolder().lockCanvas();
-		drawBack(c);
-		getHolder().unlockCanvasAndPost(c);
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		
-	}
-
-	@Override
-	public void run() {
-		
-		
 	}
 
 	Resources getRes() {

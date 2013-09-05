@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="field">#FF99EEFF</color>
+    <color name="field">#FFEEEEFF</color>
     <color name="frame">#FF6699BB</color>
     <color name="peach">#AAFFDDDD</color>
     <color name="muscat">#AACCFFFF</color>
