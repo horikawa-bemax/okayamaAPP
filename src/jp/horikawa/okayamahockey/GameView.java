@@ -10,7 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
- * 
+ * あああ
  * @author Masaaki Horikawa
  *
  */
