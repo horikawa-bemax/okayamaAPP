@@ -9,6 +9,11 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+/**
+ * あああ
+ * @author Masaaki Horikawa
+ *
+ */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, Runnable{
 	private Resources res;
 	private RectF viewRect, fieldRect;
