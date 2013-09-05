@@ -10,7 +10,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-
+/**
+ * マレット
+ * @author MasaakiHorikawa
+ *
+ */
 public abstract class Mallet {
 	private Resources res;
 	private Paint paint;
