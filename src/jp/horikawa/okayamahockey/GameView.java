@@ -43,6 +43,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 	}
 	
 	private void init(){
+		viewRect = new RectF();
+		fieldRect = new RectF();
 		fieldPaint = new Paint();
 		fieldPaint.setColor(res.getColor(R.color.field));
 	}
@@ -72,6 +74,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 		
 		
 	}
-	
-	
+
+	Resources getRes() {
+		return res;
+	}
+
+	void setRes(Resources res) {
+		this.res = res;
+	}
+
+	RectF getFieldRect() {
+		return fieldRect;
+	}
+
+	void setFieldRect(RectF fieldRect) {
+		this.fieldRect = fieldRect;
+	}
+
+	void setViewRect(RectF viewRect) {
+		this.viewRect = viewRect;
+	}
 }

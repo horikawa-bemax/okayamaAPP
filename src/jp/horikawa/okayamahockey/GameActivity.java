@@ -12,7 +12,7 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 		
-		gameView = (GameView)findViewById(R.id.gameView1);
+		gameView = (GameView)findViewById(R.id.gameView);
 		
 		gameView.getHolder().addCallback(gameView);
 	}

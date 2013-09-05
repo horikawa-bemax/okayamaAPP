@@ -6,7 +6,7 @@
     tools:context=".GameActivity" >
 
     <jp.horikawa.okayamahockey.GameView
-        android:id="@+id/gameView1"
+        android:id="@+id/gameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
