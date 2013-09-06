@@ -38,7 +38,7 @@ public class GameView extends SurfaceView{
 
 	public void drawBack(Canvas c){
 		c.drawColor(res.getColor(R.color.frame));
-		c.drawRoundRect(fieldRect, 10, 10, fieldPaint);
+		c.drawRoundRect(fieldRect, fieldRect.width()*0.05f, fieldRect.width()*0.05f, fieldPaint);
 	}
 	
 	private void init(){
