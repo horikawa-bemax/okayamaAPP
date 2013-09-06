@@ -1,11 +1,11 @@
 package jp.horikawa.okayamahockey;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -13,13 +13,18 @@ import android.view.View;
 
 public class TitleActivity extends Activity implements SurfaceHolder.Callback, Runnable {
 	private GameView gameView;
+	private Puck puck;
+	private Thread thread;
+	private boolean loop;
+	private Handler handler;
+	private long beginTime;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_title);
 		
-		gameView = (GameView)findViewById(R.id.gameView);
+		gameView = (GameView)findViewById(R.id.gameView1);
 		
 		gameView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -45,10 +50,14 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 		gameView.setViewRect(new RectF(0, 0, width, height));
 		gameView.setFieldRect(new RectF(10, 10, width-10, height-10));
 		
-		SurfaceHolder h = gameView.getHolder();
-		Canvas c = h.lockCanvas();
-		gameView.drawBack(c);
-		h.unlockCanvasAndPost(c);
+		puck = new Puck(width*0.05f, gameView.getFieldRect());
+		puck.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
+		puck.setRadian();
+		
+
+		handler = new Handler();
+		beginTime = System.currentTimeMillis();
+		handler.post(this);
 	}
 
 	@Override
@@ -58,11 +67,28 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		
+		handler.removeCallbacks(this);
 	}
 
 	@Override
 	public void run() {
-		
+		long st = System.currentTimeMillis();
+		puck.move();	
+		Canvas canvas = gameView.getHolder().lockCanvas();
+		gameView.drawBack(canvas);
+		puck.draw(canvas);
+		gameView.getHolder().unlockCanvasAndPost(canvas);
+		if(st - beginTime > 10000){
+			puck.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
+			puck.setRadian();
+			beginTime = st;
+		}
+		long et = System.currentTimeMillis();
+		long dt = et - st;
+		if(17>dt){
+			handler.postDelayed(this, 17-dt);
+		}else{
+			handler.post(this);
+		}
 	}
 }

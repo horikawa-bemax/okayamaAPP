@@ -8,7 +8,7 @@
 ![peach](res/drawable-nodpi/peach.png)  
 
 ## マスカット
-![muscat](res/drawable-nodpi/peach.png)  
+![muscat](res/drawable-nodpi/muscat.png)  
 
 ## サワラぬ神
 ![sawara](res/drawable-nodpi/sawara.png)  

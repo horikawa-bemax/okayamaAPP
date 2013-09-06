@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 
 public class GameActivity extends Activity implements SurfaceHolder.Callback, Runnable{
 	private GameView gameView;
 	private SurfaceHolder holder;
+	private Handler handler;
 	private Thread thread;
 	//
 	private Mallet malletP, malletM;
@@ -50,35 +52,39 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		gameView.setViewRect(new RectF(0,0,width,height));
 		gameView.setFieldRect(new RectF(10, 10, width-10, height-10));
 		
-		if(thread.getState() == Thread.State.NEW){
-			thread.start();
-		}
+		puck = new Puck(width*0.05f, gameView.getFieldRect());
+		puck.initPosition(width/2, height/2);
+		
+		handler = new Handler();
+		handler.post(this);
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		thread = new Thread(this);
+		
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-
+		handler.removeCallbacks(this);
 	}
 
 	@Override
 	public void run() {
-		Canvas canvas;
-		puck = new Puck(gameView.getFieldRect().width() * 0.05f);
-		puck.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
-		
-		loop = true;
-		while(loop){
-			puck.move();
-			canvas = holder.lockCanvas();
-			gameView.drawBack(canvas);
-			puck.draw(canvas);
-			holder.unlockCanvasAndPost(canvas);
+		long st = System.currentTimeMillis();
+			
+		puck.move();
+		Canvas	canvas = holder.lockCanvas();
+		gameView.drawBack(canvas);
+		puck.draw(canvas);
+		holder.unlockCanvasAndPost(canvas);
+			
+		long et = System.currentTimeMillis();
+		long dt = et - st;
+		if(dt < 17){
+			handler.postDelayed(this, 17-dt);
+		}else{
+			handler.post(this);
 		}
 	}
-
 }
