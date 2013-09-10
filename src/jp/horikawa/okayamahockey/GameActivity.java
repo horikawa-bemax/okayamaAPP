@@ -71,6 +71,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 
 	@Override
 	public void run() {
+
 		long st = System.currentTimeMillis();
 			
 		puck.move();
@@ -85,6 +86,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 			handler.postDelayed(this, 17-dt);
 		}else{
 			handler.post(this);
+
 		}
 	}
 }
