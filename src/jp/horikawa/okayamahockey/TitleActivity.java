@@ -2,6 +2,8 @@ package jp.horikawa.okayamahockey;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.widget.ImageView;
 
 public class TitleActivity extends Activity implements SurfaceHolder.Callback, Runnable {
 	private GameView gameView;
@@ -18,6 +21,7 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 	private boolean loop;
 	private Handler handler;
 	private long beginTime;
+	private ImageView pushStartImage;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,7 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 		setContentView(R.layout.activity_title);
 		
 		gameView = (GameView)findViewById(R.id.gameView1);
+		pushStartImage = (ImageView)findViewById(R.id.push_start_image);
 		
 		gameView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
@@ -53,8 +58,11 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 		puck = new Puck(width*0.05f, gameView.getFieldRect());
 		puck.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
 		puck.setRadian();
-		
 
+		Bitmap img = BitmapFactory.decodeResource(getResources(), R.drawable.push_start);
+		img = Bitmap.createScaledBitmap(img, (int)(width*0.6),(int)(img.getHeight() * img.getWidth()/(double)width), false);
+		pushStartImage.setImageBitmap(img);
+		
 		handler = new Handler();
 		beginTime = System.currentTimeMillis();
 		handler.post(this);

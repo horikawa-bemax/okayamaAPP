@@ -55,6 +55,11 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		puck = new Puck(width*0.05f, gameView.getFieldRect());
 		puck.initPosition(width/2, height/2);
 		
+		malletP = new PeachMallet(this, width*0.1f);
+		malletP.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().height()*0.8f);
+		malletM = new MuscatMallet(this, width*0.1f);
+		malletM.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().height()*0.2f);
+		
 		handler = new Handler();
 		handler.post(this);
 	}
@@ -78,6 +83,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		Canvas	canvas = holder.lockCanvas();
 		gameView.drawBack(canvas);
 		puck.draw(canvas);
+		malletP.draw(canvas);
+		malletM.draw(canvas);
 		holder.unlockCanvasAndPost(canvas);
 			
 		long et = System.currentTimeMillis();

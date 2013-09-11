@@ -2,7 +2,7 @@
 <resources>
     <color name="field">#FFEEEEFF</color>
     <color name="frame">#FF6699BB</color>
-    <color name="peach">#AAFFDDDD</color>
-    <color name="muscat">#AACCFFFF</color>
+    <color name="peach">#ffffeebb</color>
+    <color name="muscat">#ff88ff88</color>
     
 </resources>

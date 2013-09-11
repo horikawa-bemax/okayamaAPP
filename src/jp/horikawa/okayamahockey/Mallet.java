@@ -28,7 +28,7 @@ public abstract class Mallet {
 		res = context.getResources();
 		cr = r;
 		speed = (int)cr;
-		rect = new RectF();
+		rect = new RectF(0, 0, r*2, r*2);
 		imageRect = new Rect();
 		paint = new Paint();
 	}
@@ -43,6 +43,7 @@ public abstract class Mallet {
 	
 	void setImage(Bitmap b){
 		image = b;
+		imageRect = new Rect(0, 0, b.getWidth(), b.getHeight());
 	}
 		
 	void draw(Canvas canvas){
@@ -92,10 +93,10 @@ class MuscatMallet extends Mallet{
 	public MuscatMallet(Context context, float r) {
 		super(context, r);
 		Paint p = new Paint();
-		p.setColor(getRes().getColor(R.color.peach));
+		p.setColor(getRes().getColor(R.color.muscat));
 		setPaint(p);
 		
-		Bitmap b = BitmapFactory.decodeResource(getRes(), R.drawable.peach);
+		Bitmap b = BitmapFactory.decodeResource(getRes(), R.drawable.muscat);
 		Matrix m = new Matrix();
 		m.setRotate(180);
 		setImage(Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, false));
