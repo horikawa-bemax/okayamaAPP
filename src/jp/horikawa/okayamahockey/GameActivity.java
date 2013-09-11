@@ -85,6 +85,9 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		long st = System.currentTimeMillis();
 			
 		puck.move();
+		malletP.move();
+		malletM.move();
+		
 		Canvas	canvas = holder.lockCanvas();
 		gameView.drawBack(canvas);
 		puck.draw(canvas);
@@ -113,18 +116,24 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 			actionIndex = event.getActionIndex();
 			pointerId = event.getPointerId(actionIndex);
 			if(event.getY(actionIndex) > gameView.getFieldRect().centerY()){
-				malletP.setPointerId(pointerId);
+				if(malletP.getPointerId() == -1){
+					malletP.setPointerId(pointerId);
+					malletP.setTarget(event.getX(actionIndex), event.getY(actionIndex)-80);
+				}
 			}else{
-				malletM.setPointerId(pointerId);
+				if(malletM.getPointerId() == -1){
+					malletM.setPointerId(pointerId);
+					malletM.setTarget(event.getX(actionIndex), event.getY(actionIndex)+80);
+				}
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
 			for(int i=0; i<pointerCount; i++){
 				if(event.getPointerId(i) == malletP.getPointerId()){
-					malletP.move(event.getX(i), event.getY(i));
+					malletP.setTarget(event.getX(i), event.getY(i)-60);
 
 				}else if(event.getPointerId(i) == malletM.getPointerId()){
-					malletM.move(event.getX(i), event.getY(i));
+					malletM.setTarget(event.getX(i), event.getY(i)+60);
 
 				}
 			}

@@ -28,7 +28,7 @@ public abstract class Mallet {
 	public Mallet(Context context, float r) {
 		res = context.getResources();
 		cr = r;
-		speed = (int)cr;
+		speed = (int)(cr/2);
 		rect = new RectF(0, 0, r*2, r*2);
 		imageRect = new Rect();
 		paint = new Paint();
@@ -55,14 +55,18 @@ public abstract class Mallet {
 	
 	void initPosition(float cx, float cy){
 		rect.set(cx-cr, cy-cr, cx+cr, cy+cr);
+		tx = cx;
+		ty = cy;
 	}
 	
-	public void move(float x, float y){
+	public void setTarget(float x, float y){
 		tx = x;
 		ty = y;
-		
-		float dx = x-rect.centerX();
-		float dy = y-rect.centerY();
+	}
+	
+	public void move(){
+		float dx = tx-rect.centerX();
+		float dy = ty-rect.centerY();
 		
 		float len = (float)Math.sqrt(dx*dx+dy*dy);
 		
