@@ -5,10 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.View.OnTouchListener;
 
-public class GameActivity extends Activity implements SurfaceHolder.Callback, Runnable{
+public class GameActivity extends Activity implements SurfaceHolder.Callback, Runnable, OnTouchListener{
 	private GameView gameView;
 	private SurfaceHolder holder;
 	private Handler handler;
@@ -29,6 +33,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		thread = new Thread(this);
 		
 		holder.addCallback(this);
+		gameView.setOnTouchListener(this);
 		
 	}
 
@@ -93,7 +98,48 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 			handler.postDelayed(this, 17-dt);
 		}else{
 			handler.post(this);
-
 		}
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		int pointerCount = event.getPointerCount();
+		int actionIndex;
+		int pointerId;
+		
+		switch(event.getActionMasked()){
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_POINTER_DOWN:
+			actionIndex = event.getActionIndex();
+			pointerId = event.getPointerId(actionIndex);
+			if(event.getY(actionIndex) > gameView.getFieldRect().centerY()){
+				malletP.setPointerId(pointerId);
+			}else{
+				malletM.setPointerId(pointerId);
+			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			for(int i=0; i<pointerCount; i++){
+				if(event.getPointerId(i) == malletP.getPointerId()){
+					malletP.move(event.getX(i), event.getY(i));
+
+				}else if(event.getPointerId(i) == malletM.getPointerId()){
+					malletM.move(event.getX(i), event.getY(i));
+
+				}
+			}
+			Log.d("Touch_Move","");
+			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_POINTER_UP:
+			actionIndex = event.getActionIndex();
+			pointerId = event.getPointerId(actionIndex);
+			if(pointerId == malletP.getPointerId()){
+					malletP.removePointerId();
+			}else if(pointerId == malletM.getPointerId()){
+					malletM.removePointerId();
+			}
+		}
+		return true;
 	}
 }

@@ -23,6 +23,7 @@ public abstract class Mallet {
 	private float cr, tx, ty;
 	private int speed;
 	private Bitmap image;
+	private int pointerId;
 	
 	public Mallet(Context context, float r) {
 		res = context.getResources();
@@ -31,6 +32,7 @@ public abstract class Mallet {
 		rect = new RectF(0, 0, r*2, r*2);
 		imageRect = new Rect();
 		paint = new Paint();
+		pointerId = -1;
 	}
 	
 	Resources getRes(){
@@ -71,7 +73,20 @@ public abstract class Mallet {
 		
 		rect.offset(dx, dy);
 	}
+
+	public void setPointerId(int pointerId) {
+			if(this.pointerId == -1){
+				this.pointerId = pointerId;
+			}
+	}
 	
+	public void removePointerId(){
+		this.pointerId = -1;
+	}
+	
+	public int getPointerId(){
+		return pointerId;
+	}
 }
 
 class PeachMallet extends Mallet{
