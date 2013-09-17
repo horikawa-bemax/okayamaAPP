@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
@@ -20,10 +21,12 @@ public abstract class Mallet {
 	private Paint paint;
 	private RectF rect;
 	private Rect imageRect;
-	private float cr, tx, ty;
+	private float tx, ty;
+	float cr, vx, vy;
 	private int speed;
 	private Bitmap image;
 	private int pointerId;
+	private Point point;
 	
 	public Mallet(Context context, float r) {
 		res = context.getResources();
@@ -33,6 +36,7 @@ public abstract class Mallet {
 		imageRect = new Rect();
 		paint = new Paint();
 		pointerId = -1;
+		point = new Point();
 	}
 	
 	Resources getRes(){
@@ -65,17 +69,17 @@ public abstract class Mallet {
 	}
 	
 	public void move(){
-		float dx = tx-rect.centerX();
-		float dy = ty-rect.centerY();
+		vx = tx-rect.centerX();
+		vy = ty-rect.centerY();
 		
-		float len = (float)Math.sqrt(dx*dx+dy*dy);
+		float len = (float)Math.sqrt(vx*vx+vy*vy);
 		
 		if(len > speed){
-			dx = speed * dx / len; 
-			dy = speed * dy / len;
+			vx = speed * vx / len; 
+			vy = speed * vy / len;
 		}
 		
-		rect.offset(dx, dy);
+		rect.offset(vx, vy);
 	}
 
 	public void setPointerId(int pointerId) {
@@ -90,6 +94,11 @@ public abstract class Mallet {
 	
 	public int getPointerId(){
 		return pointerId;
+	}
+	
+	Point getPoint(){
+		point.set((int)rect.centerX(), (int)rect.centerY());
+		return point;
 	}
 }
 

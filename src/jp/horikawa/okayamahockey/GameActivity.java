@@ -2,6 +2,7 @@ package jp.horikawa.okayamahockey;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
@@ -88,6 +89,9 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		malletP.move();
 		malletM.move();
 		
+		isHit(malletP, puck);
+		isHit(malletM, puck);
+		
 		Canvas	canvas = holder.lockCanvas();
 		gameView.drawBack(canvas);
 		puck.draw(canvas);
@@ -150,5 +154,32 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 			}
 		}
 		return true;
+	}
+	
+	private void isHit(Mallet m, Puck p){
+		Point pm = m.getPoint();
+		Point pp = p.getPoint();
+		float dx = pm.x - pp.x;
+		float dy = pm.y - pp.y;
+		float len2 = (float)(dx*dx+dy*dy);
+		float r2 = m.cr + p.cr;
+		float vx = m.vx - p.vx;
+		float vy = m.vy - p.vy;
+		float x = dx+vx;
+		float y = dy+vy;
+		float a = vx*vx+vy*vy;
+		float b = dx*vx+dy+vy;
+		float c = dx*dx+dy*dy-r2*r2;
+		float f1 = (-b-(float)Math.sqrt(b*b-a*c))/a;
+		float f2 = (-b+(float)Math.sqrt(b*b-a*c))/a;
+		double rad = Math.asin(dy/Math.sqrt(len2));
+		if(f1>=0 && f1<1) 
+			Log.d("hit","hit now");
+		if(rad >= 0){
+			rad = Math.acos(dx/Math.sqrt(len2));
+		}else{
+			rad = 2*Math.PI - Math.acos(dx/Math.sqrt(len2));
+		}
+		
 	}
 }

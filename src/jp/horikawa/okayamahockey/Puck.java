@@ -3,27 +3,32 @@ package jp.horikawa.okayamahockey;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 
 public class Puck {
-	private float cr;
-	private float speed;
-	private double radian; //ラジアン（角度）
+	private float speed, vector;
+	//double radian; //ラジアン（角度)
+	float cr, vx, vy;
 	private RectF rect, fieldRect;
 	private Paint paint;
+	private Point point;
 
 	public Puck(float cr, RectF field) {
 		this.cr = cr;
 		this.fieldRect = field;
 		speed = cr / 5;
-		setRadian();
+		setVector();
 		rect = new RectF();
 		paint = new Paint();
 		paint.setColor(Color.WHITE);
+		point = new Point();
 	}
 	
-	public void setRadian(){
-		radian = Math.random() * Math.PI / 2 + Math.PI / 4;
+	public void setVector(){
+		double radian = Math.random() * Math.PI / 2 + Math.PI / 4;
+		vx = (float)(speed * Math.cos(radian));
+		vy = (float)(speed * Math.sin(radian));
 	}
 	
 	public void initPosition(float cx, float cy){
@@ -32,8 +37,6 @@ public class Puck {
 	
 	public void move(){
 		boolean bound = false;
-		float vx = (float)(speed * Math.cos(radian));
-		float vy = (float)(speed * Math.sin(radian));
 		float dx = vx, dy = vy;
 		
 		if(rect.left < fieldRect.left){
@@ -57,24 +60,14 @@ public class Puck {
 			bound = true;
 		}
 		rect.offset(dx, dy);
-		if(bound){
-			if(Math.asin(vy/speed)>0){
-				radian = Math.acos(vx/speed);
-			}else{
-				radian = Math.PI * 2 - Math.acos(vx/speed);
-			}
-		}
-	}
-	
-	public float getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(float speed) {
-		this.speed = speed;
 	}
 
 	public void draw(Canvas c){
 		c.drawCircle(rect.centerX(), rect.centerY(), cr, paint);
+	}
+	
+	Point getPoint(){
+		point.set((int)rect.centerX(), (int)rect.centerY());
+		return point;
 	}
 }
