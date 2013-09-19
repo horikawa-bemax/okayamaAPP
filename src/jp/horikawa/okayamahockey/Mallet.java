@@ -28,11 +28,11 @@ public abstract class Mallet {
 	private int pointerId;
 	private Point point;
 	
-	public Mallet(Context context, float r) {
+	public Mallet(Context context, RectF rc) {
 		res = context.getResources();
-		cr = r;
+		cr = rc.width() * 0.1F;
 		speed = (int)(cr/2);
-		rect = new RectF(0, 0, r*2, r*2);
+		rect = new RectF(0, 0, cr*2, cr*2);
 		imageRect = new Rect();
 		paint = new Paint();
 		pointerId = -1;
@@ -104,22 +104,23 @@ public abstract class Mallet {
 
 class PeachMallet extends Mallet{
 	
-	public PeachMallet(Context context, float r) {
-		super(context, r);
+	public PeachMallet(Context context, RectF rc) {
+		super(context, rc);
 		Paint p = new Paint();
 		p.setColor(getRes().getColor(R.color.peach));
 		setPaint(p);
 		
 		Bitmap b = BitmapFactory.decodeResource(getRes(), R.drawable.peach);
 		setImage(b);
+		initPosition(rc.centerX(), rc.height()*0.8F);
 	}
 
 }
 
 class MuscatMallet extends Mallet{
 
-	public MuscatMallet(Context context, float r) {
-		super(context, r);
+	public MuscatMallet(Context context, RectF rc) {
+		super(context, rc);
 		Paint p = new Paint();
 		p.setColor(getRes().getColor(R.color.muscat));
 		setPaint(p);
@@ -128,6 +129,7 @@ class MuscatMallet extends Mallet{
 		Matrix m = new Matrix();
 		m.setRotate(180);
 		setImage(Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, false));
+		initPosition(rc.centerX(), rc.height()*0.2F);
 	}
 
 }

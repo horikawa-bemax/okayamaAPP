@@ -21,6 +21,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 	//
 	private Mallet malletP, malletM;
 	private Puck puck;
+	private Sawara sawara;
 	private boolean loop;
 	
 	@Override
@@ -55,17 +56,20 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 	
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+		//ゲームビュー初期化
+		RectF fieldRect = new RectF(10,10,width-10,height-10);
 		gameView.setViewRect(new RectF(0,0,width,height));
-		gameView.setFieldRect(new RectF(10, 10, width-10, height-10));
-		
+		gameView.setFieldRect(fieldRect);
+		//パック初期化
 		puck = new Puck(width*0.05f, gameView.getFieldRect());
 		puck.initPosition(width/2, height/2);
-		
-		malletP = new PeachMallet(this, width*0.1f);
-		malletP.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().height()*0.8f);
-		malletM = new MuscatMallet(this, width*0.1f);
-		malletM.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().height()*0.2f);
-		
+		//ピーチマレット初期化
+		malletP = new PeachMallet(this, fieldRect);
+		//マスカットマレット初期化
+		malletM = new MuscatMallet(this, fieldRect);
+		//さわら初期化
+		sawara = new Sawara(this, fieldRect);
+		//ハンドラー初期化
 		handler = new Handler();
 		handler.post(this);
 	}
@@ -93,10 +97,16 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		isHit(malletM, puck);
 		
 		Canvas	canvas = holder.lockCanvas();
+		//背景描画
 		gameView.drawBack(canvas);
+		//パック描画
 		puck.draw(canvas);
+		//マレット描画
 		malletP.draw(canvas);
 		malletM.draw(canvas);
+		//サワラ描画
+		sawara.draw(canvas);
+		
 		holder.unlockCanvasAndPost(canvas);
 			
 		long et = System.currentTimeMillis();
