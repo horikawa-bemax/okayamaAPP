@@ -22,7 +22,7 @@ public abstract class Mallet {
 	private RectF rect;
 	private Rect imageRect;
 	private float tx, ty;
-	float cr, vx, vy;
+	float cr, vec[];
 	private int speed;
 	private Bitmap image;
 	private int pointerId;
@@ -37,6 +37,7 @@ public abstract class Mallet {
 		paint = new Paint();
 		pointerId = -1;
 		point = new Point();
+		vec = new float[2];
 	}
 	
 	Resources getRes(){
@@ -69,17 +70,17 @@ public abstract class Mallet {
 	}
 	
 	public void move(){
-		vx = tx-rect.centerX();
-		vy = ty-rect.centerY();
+		vec[0] = tx-rect.centerX();
+		vec[1] = ty-rect.centerY();
 		
-		float len = (float)Math.sqrt(vx*vx+vy*vy);
+		float len = (float)Math.sqrt(vec[0]*vec[0]+vec[1]*vec[1]);
 		
 		if(len > speed){
-			vx = speed * vx / len; 
-			vy = speed * vy / len;
+			vec[0] = speed * vec[0] / len; 
+			vec[1] = speed * vec[1] / len;
 		}
 		
-		rect.offset(vx, vy);
+		rect.offset(vec[0], vec[1]);
 	}
 
 	public void setPointerId(int pointerId) {

@@ -56,8 +56,8 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 		gameView.setFieldRect(new RectF(10, 10, width-10, height-10));
 		
 		puck = new Puck(width*0.05f, gameView.getFieldRect());
-		puck.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
-		puck.setVector();
+		puck.setRect(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
+		puck.initVector();
 
 		Bitmap img = BitmapFactory.decodeResource(getResources(), R.drawable.push_start);
 		img = Bitmap.createScaledBitmap(img, (int)(width*0.6),(int)(img.getHeight() * img.getWidth()/(double)width), false);
@@ -87,8 +87,8 @@ public class TitleActivity extends Activity implements SurfaceHolder.Callback, R
 		puck.draw(canvas);
 		gameView.getHolder().unlockCanvasAndPost(canvas);
 		if(st - beginTime > 10000){
-			puck.initPosition(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
-			puck.setVector();
+			puck.setRect(gameView.getFieldRect().centerX(), gameView.getFieldRect().centerY());
+			puck.initVector();
 			beginTime = st;
 		}
 		long et = System.currentTimeMillis();

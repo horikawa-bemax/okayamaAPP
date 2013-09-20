@@ -2,6 +2,7 @@ package jp.horikawa.okayamahockey;
 
 import android.app.Activity;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -62,7 +63,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 		gameView.setFieldRect(fieldRect);
 		//パック初期化
 		puck = new Puck(width*0.05f, gameView.getFieldRect());
-		puck.initPosition(width/2, height/2);
 		//ピーチマレット初期化
 		malletP = new PeachMallet(this, fieldRect);
 		//マスカットマレット初期化
@@ -169,27 +169,23 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ru
 	private void isHit(Mallet m, Puck p){
 		Point pm = m.getPoint();
 		Point pp = p.getPoint();
-		float dx = pm.x - pp.x;
-		float dy = pm.y - pp.y;
-		float len2 = (float)(dx*dx+dy*dy);
-		float r2 = m.cr + p.cr;
-		float vx = m.vx - p.vx;
-		float vy = m.vy - p.vy;
-		float x = dx+vx;
-		float y = dy+vy;
-		float a = vx*vx+vy*vy;
-		float b = dx*vx+dy+vy;
-		float c = dx*dx+dy*dy-r2*r2;
-		float f1 = (-b-(float)Math.sqrt(b*b-a*c))/a;
-		float f2 = (-b+(float)Math.sqrt(b*b-a*c))/a;
-		double rad = Math.asin(dy/Math.sqrt(len2));
-		if(f1>=0 && f1<1) 
-			Log.d("hit","hit now");
-		if(rad >= 0){
-			rad = Math.acos(dx/Math.sqrt(len2));
-		}else{
-			rad = 2*Math.PI - Math.acos(dx/Math.sqrt(len2));
-		}
+		int dx = pp.x - pm.x;
+		int dy = pp.y - pm.y;
+		float len = (float)Math.sqrt(dx*dx+dy*dy);
+		float r = p.cr + m.cr;
 		
+		if(len <= r){
+			float sin = p.vec[0]/p.getSpeed();
+			float cos = p.vec[1]/p.getSpeed();
+			p.offset((r-len)*dx/len, (r-len)*dy/len);
+			Matrix matrix = new Matrix();
+			matrix.setSinCos(-sin, cos);
+			matrix.postScale(-1, 1);
+			matrix.mapVectors(p.vec);
+			matrix.setSinCos(sin, cos);
+			matrix.mapVectors(p.vec);
+
+		}
+		Log.d("vec","vx="+p.getPoint().x+":vy="+p.getPoint().y);
 	}
 }
